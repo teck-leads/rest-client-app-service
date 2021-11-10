@@ -7,12 +7,15 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.client.RestTemplate;
 
+import com.techleads.app.exceptions.BaseBusinessException;
+import com.techleads.app.exceptions.InValidVinException;
 import com.techleads.app.model.UserResponse;
 import com.techleads.app.model.Users;
 
@@ -68,6 +71,13 @@ public class UserService {
 		requestHeaders.add("Authorization", "test");
 		requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 		return requestHeaders;
+	}
+
+	public void validate(String path) {
+		if (!"users".equals(path)) {
+			throw new InValidVinException(HttpStatus.BAD_REQUEST, String.valueOf(HttpStatus.BAD_REQUEST.value()),
+					"Invalid Vin");
+		}
 	}
 
 }
